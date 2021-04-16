@@ -36,7 +36,7 @@ public class Author {
 
     @Override
     public String toString() {
-        return "Author [description=" + description + ", email=" + email + ", instanteCreation=" + instanteCreation
-                + ", name=" + name + "]";
+        return "Author [description=" + description + ", email=" + email + ", id=" + id + ", instanteCreation="
+                + instanteCreation + ", name=" + name + "]";
     }
 }
