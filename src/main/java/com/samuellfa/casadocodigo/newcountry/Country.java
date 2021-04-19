@@ -1,22 +1,21 @@
-package com.samuellfa.casadocodigo.newcategory;
+package com.samuellfa.casadocodigo.newcountry;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
 
 @Entity
-public class Category {
+public class Country {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
-    public Category() {}
+    public Country() {
+    }
 
-    public Category(@NotBlank String name) {
+    public Country(String name) {
         this.name = name;
     }
 
