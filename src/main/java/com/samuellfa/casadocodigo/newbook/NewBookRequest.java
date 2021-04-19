@@ -3,7 +3,6 @@ package com.samuellfa.casadocodigo.newbook;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import javax.persistence.EntityManager;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -59,10 +58,16 @@ public class NewBookRequest {
         this.idAuthor = idAuthor;
     }
 
-    public Book toModel(EntityManager manager) {
-        var categoryOptional = manager.find(Category.class, idCategory);
-        var authorOptional = manager.find(Author.class, idCategory);
+    public Book toModel(CategoryRepository categoryRepository, AuthorRepository authorRepository) {
+        var categoryOptional = categoryRepository.findById(idCategory);
+        if (categoryOptional.isEmpty()) {
+            throw new IllegalArgumentException("This category does not exist");
+        }
+        var authorOptional = authorRepository.findById(idAuthor);
+        if (authorOptional.isEmpty()) {
+            throw new IllegalArgumentException("This author does not exist");
+        }
 
-        return new Book(title, bookAbstract, summary, price, numberOfPages, isbn, publishTime, categoryOptional, authorOptional);
+        return new Book(title, bookAbstract, summary, price, numberOfPages, isbn, publishTime, categoryOptional.get(), authorOptional.get());
     }
 }
