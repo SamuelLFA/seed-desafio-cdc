@@ -4,10 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 import com.samuellfa.casadocodigo.newauthor.Author;
 import com.samuellfa.casadocodigo.newcategory.Category;
@@ -24,9 +25,9 @@ public class Book {
     private int numberOfPages;
     private String isbn;
     private LocalDate publishTime;
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Author author;
 
     public Book() {
