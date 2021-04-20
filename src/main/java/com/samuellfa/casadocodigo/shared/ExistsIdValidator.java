@@ -29,12 +29,12 @@ public class ExistsIdValidator implements ConstraintValidator<ExistsId, Object> 
 			return true;
 		}
 		
-		Query query = manager.createQuery("SELECT 1 FROM "+ klass.getName() + " where " + domainAttribute + "=:value");
+		Query query = manager.createQuery("SELECT 1 FROM " + klass.getName() + " where " + domainAttribute + "=:value");
 		query.setParameter("value", value);	
 	
 		
 		List<?> list = query.getResultList();
-		Assert.isTrue(list.size() <= 1, "CAUTION: exists more than one "+ klass +" with the attribute " + domainAttribute + " and value = " + value);
+		Assert.isTrue(list.size() <= 1, "CAUTION: exists more than one " + klass + " with the attribute " + domainAttribute + " and value = " + value);
 		
 		return !list.isEmpty();
     }
