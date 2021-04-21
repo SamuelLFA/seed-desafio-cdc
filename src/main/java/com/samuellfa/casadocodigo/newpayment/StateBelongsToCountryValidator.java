@@ -1,6 +1,8 @@
 package com.samuellfa.casadocodigo.newpayment;
 
+import com.samuellfa.casadocodigo.newcountry.Country;
 import com.samuellfa.casadocodigo.newcountry.CountryRepository;
+import com.samuellfa.casadocodigo.newstate.State;
 import com.samuellfa.casadocodigo.newstate.StateRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +45,12 @@ public class StateBelongsToCountryValidator implements Validator {
 		var country = countryOptional.get();
 		var state = stateOptional.get();
 
-		if (state.getCountry().getId() != country.getId()) {
+		if (doesNotBelongsToCountry(country, state)) {
 			errors.rejectValue("idState", null, "This state does not belongs to the country");
 		}
+	}
+
+	private boolean doesNotBelongsToCountry(Country country, State state) {
+		return !state.getCountry().getId().equals(country.getId());
 	}
 }

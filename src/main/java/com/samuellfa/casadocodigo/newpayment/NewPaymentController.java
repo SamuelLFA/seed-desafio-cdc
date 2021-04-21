@@ -15,9 +15,12 @@ public class NewPaymentController {
     @Autowired
     private StateBelongsToCountryValidator stateBelongsToCountryValidator;
 
+    @Autowired
+    private TotalOrderValidator totalValidator;
+
     @InitBinder
     public void init(WebDataBinder binder) {
-        binder.addValidators(stateBelongsToCountryValidator);
+        binder.addValidators(stateBelongsToCountryValidator, totalValidator);
     }
     
     @PostMapping("/purchase")

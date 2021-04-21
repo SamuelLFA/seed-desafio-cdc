@@ -33,72 +33,101 @@ public class NewPaymentRequest {
     private String phone;
     @NotBlank
     private String cep;
+    @NotNull
+    private NewOrderRequest order;
 
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public String getLastName() {
         return lastName;
     }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
     public String getDocument() {
         return document;
     }
+
     public void setDocument(String document) {
         this.document = document;
     }
+
     public String getComplement() {
         return complement;
     }
+
     public void setComplement(String complement) {
         this.complement = complement;
     }
+
     public String getCity() {
         return city;
     }
+
     public void setCity(String city) {
         this.city = city;
     }
+
     public Long getIdCountry() {
         return idCountry;
     }
+
     public void setIdCountry(Long idCountry) {
         this.idCountry = idCountry;
     }
+
     public Long getIdState() {
         return idState;
     }
+
     public void setIdState(Long idState) {
         this.idState = idState;
     }
+
     public String getPhone() {
         return phone;
     }
+
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
     public String getCep() {
         return cep;
     }
+
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+    public NewOrderRequest getOrder() {
+        return order;
+    }
+
+    public void setOrder(NewOrderRequest order) {
+        this.order = order;
     }
 
     @Override
     public String toString() {
         return "NewPaymentRequest [cep=" + cep + ", city=" + city + ", complement=" + complement + ", document="
                 + document + ", email=" + email + ", idCountry=" + idCountry + ", idState=" + idState + ", lastName="
-                + lastName + ", name=" + name + ", phone=" + phone + "]";
+                + lastName + ", name=" + name + ", order=" + order + ", phone=" + phone + "]";
     }
 }
