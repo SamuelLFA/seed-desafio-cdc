@@ -10,7 +10,7 @@ import com.samuellfa.casadocodigo.shared.UniqueValue;
 
 public class NewStateRequest {
 
-    @UniqueValue(domainClass = State.class, fieldName = "name", message = "{country.name.unique}")
+    @UniqueValue(domainClass = State.class, fieldName = "name", message = "{state.name.unique}")
     @NotBlank
     private String name;
 

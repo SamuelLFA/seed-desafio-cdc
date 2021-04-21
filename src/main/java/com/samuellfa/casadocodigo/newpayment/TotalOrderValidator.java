@@ -1,7 +1,5 @@
 package com.samuellfa.casadocodigo.newpayment;
 
-import java.math.BigDecimal;
-
 import com.samuellfa.casadocodigo.newbook.BookRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +26,9 @@ public class TotalOrderValidator implements Validator {
 	
 		var request = (NewPaymentRequest) object;
 		var order = request.getOrder();
+		var orderModel = request.getOrder().toModel(bookRepository);
 		var total = order.getTotal();
-		var totalByItems = order
-			.getItems()
-			.stream()
-			.map(item -> {
-				var bookOptional = bookRepository.findById(item.getIdBook());
-				if (bookOptional.isPresent()) {
-					return bookOptional.get().getPrice().multiply(new BigDecimal(item.getQuantity()));
-				}
-				return new BigDecimal("0.00");
-			})
-			.reduce(new BigDecimal("0.00"), BigDecimal::add);
+		var totalByItems = orderModel.total();
 		
 		if (!total.equals(totalByItems)) {
 			errors.rejectValue("order", null, "The total value of the order must be equal to the sum of the items");

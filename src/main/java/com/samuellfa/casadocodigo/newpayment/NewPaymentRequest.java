@@ -1,11 +1,15 @@
 package com.samuellfa.casadocodigo.newpayment;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.samuellfa.casadocodigo.newbook.BookRepository;
 import com.samuellfa.casadocodigo.newcountry.Country;
+import com.samuellfa.casadocodigo.newcountry.CountryRepository;
 import com.samuellfa.casadocodigo.newstate.State;
+import com.samuellfa.casadocodigo.newstate.StateRepository;
 import com.samuellfa.casadocodigo.shared.ExistsId;
 
 public class NewPaymentRequest {
@@ -24,15 +28,16 @@ public class NewPaymentRequest {
     @NotBlank
     private String city;
     @NotNull
-    @ExistsId(domainClass = Country.class, fieldName = "id")
+    @ExistsId(domainClass = Country.class, fieldName = "id", message = "{payment.country.nonexist}")
     private Long idCountry;
     @NotNull
-    @ExistsId(domainClass = State.class, fieldName = "id")
+    @ExistsId(domainClass = State.class, fieldName = "id",  message = "{payment.state.nonexist}")
     private Long idState;
     @NotBlank
     private String phone;
     @NotBlank
     private String cep;
+    @Valid
     @NotNull
     private NewOrderRequest order;
 
@@ -129,5 +134,21 @@ public class NewPaymentRequest {
         return "NewPaymentRequest [cep=" + cep + ", city=" + city + ", complement=" + complement + ", document="
                 + document + ", email=" + email + ", idCountry=" + idCountry + ", idState=" + idState + ", lastName="
                 + lastName + ", name=" + name + ", order=" + order + ", phone=" + phone + "]";
+    }
+
+    public Payment toModel(CountryRepository countryRepository, StateRepository stateRepository, BookRepository bookRepository) {
+        var countryOptional = countryRepository.findById(idCountry);
+
+        if (countryOptional.isEmpty()) {
+            throw new IllegalArgumentException("The country " + idCountry + " does not exists");
+        }
+
+        var stateOptional = stateRepository.findById(idState);
+
+        if (stateOptional.isEmpty()) {
+            throw new IllegalArgumentException("The state " + idState + " does not exists");
+        }
+
+        return new Payment(email, name, lastName, document, complement, city, countryOptional.get(), stateOptional.get(), phone, cep, order.toModel(bookRepository));
     }
 }

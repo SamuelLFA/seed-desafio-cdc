@@ -20,6 +20,7 @@ public class NewAuthorController {
     @Transactional
     public ResponseEntity<NewAuthorResponse> create(@RequestBody @Valid NewAuthorRequest request, UriComponentsBuilder uriBuilder) {
         var author = request.toModel();
+        authorRepository.save(author);
 
         var newAuthorResponse = new NewAuthorResponse(author);
         var uri = uriBuilder.path("/authors/{id}").buildAndExpand(author.getId()).toUri();
