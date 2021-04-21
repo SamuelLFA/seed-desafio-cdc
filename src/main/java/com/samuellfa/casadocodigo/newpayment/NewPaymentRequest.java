@@ -10,7 +10,11 @@ import com.samuellfa.casadocodigo.newcountry.Country;
 import com.samuellfa.casadocodigo.newcountry.CountryRepository;
 import com.samuellfa.casadocodigo.newstate.State;
 import com.samuellfa.casadocodigo.newstate.StateRepository;
+import com.samuellfa.casadocodigo.newticket.Ticket;
+import com.samuellfa.casadocodigo.newticket.TicketRepository;
 import com.samuellfa.casadocodigo.shared.ExistsId;
+
+import org.springframework.util.StringUtils;
 
 public class NewPaymentRequest {
 
@@ -40,6 +44,9 @@ public class NewPaymentRequest {
     @Valid
     @NotNull
     private NewOrderRequest order;
+    @ExistsId(domainClass = Ticket.class, fieldName =  "code", message = "{payment.code.invalid}")
+    private String ticketCode;
+    private PaymentOrder model;
 
     public String getEmail() {
         return email;
@@ -129,6 +136,14 @@ public class NewPaymentRequest {
         this.order = order;
     }
 
+    public String getTicketCode() {
+        return ticketCode;
+    }
+
+    public void setTicketCode(String ticketCode) {
+        this.ticketCode = ticketCode;
+    }
+
     @Override
     public String toString() {
         return "NewPaymentRequest [cep=" + cep + ", city=" + city + ", complement=" + complement + ", document="
@@ -136,8 +151,9 @@ public class NewPaymentRequest {
                 + lastName + ", name=" + name + ", order=" + order + ", phone=" + phone + "]";
     }
 
-    public Payment toModel(CountryRepository countryRepository, StateRepository stateRepository, BookRepository bookRepository) {
+    public Payment toModel(CountryRepository countryRepository, StateRepository stateRepository, BookRepository bookRepository, TicketRepository ticketRepository) {
         var countryOptional = countryRepository.findById(idCountry);
+        var orderModel = order.toModel(bookRepository);
 
         if (countryOptional.isEmpty()) {
             throw new IllegalArgumentException("The country " + idCountry + " does not exists");
@@ -149,6 +165,18 @@ public class NewPaymentRequest {
             throw new IllegalArgumentException("The state " + idState + " does not exists");
         }
 
-        return new Payment(email, name, lastName, document, complement, city, countryOptional.get(), stateOptional.get(), phone, cep, order.toModel(bookRepository));
+        Payment payment = new Payment(email, name, lastName, document, complement, city, countryOptional.get(), stateOptional.get(), phone, cep, orderModel);
+
+        if (StringUtils.hasText(ticketCode)) {
+            var ticketOptional = ticketRepository.findByCode(ticketCode);
+
+            if (ticketOptional.isEmpty()) {
+                throw new IllegalArgumentException("The code " + ticketCode + " does not exists");
+            }
+
+            payment.setTicket(ticketOptional.get());
+        }
+        
+        return payment;
     }
 }

@@ -13,7 +13,7 @@ public class NewBookResponse {
     private String isbn;
     private int numberOfPages;
     private BigDecimal price;
-    private LocalDate publishTime;
+    private LocalDate publishDate;
     private String summary;
     private String title;
 
@@ -24,7 +24,7 @@ public class NewBookResponse {
         isbn = book.getIsbn();
         numberOfPages = book.getNumberOfPages();
         price = book.getPrice();
-        publishTime = book.getPublishTime();
+        publishDate = book.getPublishDate();
         summary = book.getSummary();
         title = book.getTitle();
     }
@@ -77,12 +77,12 @@ public class NewBookResponse {
         this.price = price;
     }
 
-    public LocalDate getPublishTime() {
-        return publishTime;
+    public LocalDate getPublishDate() {
+        return publishDate;
     }
 
-    public void setPublishTime(LocalDate publishTime) {
-        this.publishTime = publishTime;
+    public void setPublishDate(LocalDate publishDate) {
+        this.publishDate = publishDate;
     }
 
     public String getSummary() {

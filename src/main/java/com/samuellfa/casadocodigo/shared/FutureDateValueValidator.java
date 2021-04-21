@@ -1,4 +1,4 @@
-package com.samuellfa.casadocodigo.newbook;
+package com.samuellfa.casadocodigo.shared;
 
 import java.time.LocalDate;
 

@@ -24,7 +24,7 @@ public class Book {
     private BigDecimal price;
     private int numberOfPages;
     private String isbn;
-    private LocalDate publishTime;
+    private LocalDate publishDate;
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
     @ManyToOne(fetch = FetchType.EAGER)
@@ -34,14 +34,14 @@ public class Book {
     }
 
     public Book(String title, String bookAbstract, String summary, BigDecimal price, int numberOfPages,
-            String isbn, LocalDate publishTime, Category category, Author author) {
+            String isbn, LocalDate publishDate, Category category, Author author) {
         this.title = title;
         this.bookAbstract = bookAbstract;
         this.summary = summary;
         this.price = price;
         this.numberOfPages = numberOfPages;
         this.isbn = isbn;
-        this.publishTime = publishTime;
+        this.publishDate = publishDate;
         this.category = category;
         this.author = author;
     }
@@ -102,12 +102,12 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public LocalDate getPublishTime() {
-        return publishTime;
+    public LocalDate getPublishDate() {
+        return publishDate;
     }
 
-    public void setPublishTime(LocalDate publishTime) {
-        this.publishTime = publishTime;
+    public void setPublishDate(LocalDate publishDate) {
+        this.publishDate = publishDate;
     }
 
     public Category getCategory() {
@@ -129,7 +129,7 @@ public class Book {
     @Override
     public String toString() {
         return "Book [author=" + author + ", bookAbstract=" + bookAbstract + ", category=" + category + ", id=" + id
-                + ", isbn=" + isbn + ", numberOfPages=" + numberOfPages + ", price=" + price + ", publishTime="
-                + publishTime + ", summary=" + summary + ", title=" + title + "]";
+                + ", isbn=" + isbn + ", numberOfPages=" + numberOfPages + ", price=" + price + ", publishDate="
+                + publishDate + ", summary=" + summary + ", title=" + title + "]";
     }
 }

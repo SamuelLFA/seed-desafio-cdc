@@ -2,7 +2,6 @@ package com.samuellfa.casadocodigo.newpayment;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +10,7 @@ import javax.persistence.OneToOne;
 
 import com.samuellfa.casadocodigo.newcountry.Country;
 import com.samuellfa.casadocodigo.newstate.State;
+import com.samuellfa.casadocodigo.newticket.Ticket;
 
 @Entity
 public class Payment {
@@ -32,6 +32,8 @@ public class Payment {
     private String cep;
     @OneToOne(mappedBy = "payment", cascade = CascadeType.PERSIST)
     private PaymentOrder order;
+    @ManyToOne
+    private Ticket ticket;
 
     public Payment() {}
 
@@ -144,5 +146,13 @@ public class Payment {
 
     public void setOrder(PaymentOrder order) {
         this.order = order;
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 }

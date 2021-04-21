@@ -16,6 +16,7 @@ import com.samuellfa.casadocodigo.newauthor.AuthorRepository;
 import com.samuellfa.casadocodigo.newcategory.Category;
 import com.samuellfa.casadocodigo.newcategory.CategoryRepository;
 import com.samuellfa.casadocodigo.shared.ExistsId;
+import com.samuellfa.casadocodigo.shared.FutureDateValue;
 import com.samuellfa.casadocodigo.shared.UniqueValue;
 
 public class NewBookRequest {
@@ -34,9 +35,9 @@ public class NewBookRequest {
     private int numberOfPages;
     @NotBlank
     private String isbn;
-    @NotNull @FutureDateValue(message = "{book.publishtime.future}")
+    @NotNull @FutureDateValue(message = "{book.publishdate.future}")
     @JsonFormat(pattern = "dd/MM/yyyy", shape = Shape.STRING)
-    private LocalDate publishTime;
+    private LocalDate publishDate;
     @NotNull @Min(value = 0)
     @ExistsId(domainClass = Category.class, fieldName = "id", message = "{book.category.nonexist}")
     private Long idCategory;
@@ -46,14 +47,14 @@ public class NewBookRequest {
 
     public NewBookRequest(@NotBlank String title, @NotBlank @Size(max = 500) String bookAbstract, String summary,
             @NotNull @DecimalMin("20.00") BigDecimal price, @NotNull @Min(20) int numberOfPages, @NotBlank String isbn,
-            @NotNull LocalDate publishTime, @NotNull @Min(value = 0) Long idCategory, @NotNull @Min(value = 0) Long idAuthor) {
+            @NotNull LocalDate publishDate, @NotNull @Min(value = 0) Long idCategory, @NotNull @Min(value = 0) Long idAuthor) {
         this.title = title;
         this.bookAbstract = bookAbstract;
         this.summary = summary;
         this.price = price;
         this.numberOfPages = numberOfPages;
         this.isbn = isbn;
-        this.publishTime = publishTime;
+        this.publishDate = publishDate;
         this.idCategory = idCategory;
         this.idAuthor = idAuthor;
     }
@@ -68,6 +69,6 @@ public class NewBookRequest {
             throw new IllegalArgumentException("This author does not exist");
         }
 
-        return new Book(title, bookAbstract, summary, price, numberOfPages, isbn, publishTime, categoryOptional.get(), authorOptional.get());
+        return new Book(title, bookAbstract, summary, price, numberOfPages, isbn, publishDate, categoryOptional.get(), authorOptional.get());
     }
 }

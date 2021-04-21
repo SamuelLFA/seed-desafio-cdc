@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import com.samuellfa.casadocodigo.newbook.BookRepository;
 import com.samuellfa.casadocodigo.newcountry.CountryRepository;
 import com.samuellfa.casadocodigo.newstate.StateRepository;
+import com.samuellfa.casadocodigo.newticket.TicketRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,9 @@ public class NewPaymentController {
     private TotalOrderValidator totalValidator;
 
     @Autowired
+    private TicketValidator ticketValidator;
+
+    @Autowired
     private CountryRepository countryRepository;
 
     @Autowired
@@ -36,15 +40,20 @@ public class NewPaymentController {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private TicketRepository ticketRepository;
+
     @InitBinder
     public void init(WebDataBinder binder) {
-        binder.addValidators(stateBelongsToCountryValidator, totalValidator);
+        binder.addValidators(stateBelongsToCountryValidator, totalValidator, ticketValidator);
     }
     
     @PostMapping("/purchase")
     public ResponseEntity<Payment> create(@RequestBody @Valid NewPaymentRequest request, UriComponentsBuilder uriBuilder) {
-        var payment = request.toModel(countryRepository, stateRepository, bookRepository);
+        var payment = request.toModel(countryRepository, stateRepository, bookRepository, ticketRepository);
         paymentRepository.save(payment);
+
+        System.out.println(payment.getOrder().total());
 
         var uri = uriBuilder.path("/payments/{id}").buildAndExpand(payment.getId()).toUri();
 
